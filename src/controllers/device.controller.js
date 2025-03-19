@@ -1,13 +1,10 @@
-import { database } from "../config/database.js";
+import { deviceService } from "../services/device.service.js";
 
 export const deviceController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
-
-    database.query(`SELECT * FROM device`, (err, res) => {
-      console.log(res);
-    });
+    return await deviceService.getAll(pageSize, page);
   },
   getOne: async (req, res) => {
     res.send("Device Controller Get One");

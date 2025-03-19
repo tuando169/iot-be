@@ -11,7 +11,7 @@ export const database = {
       port: 3306,
     });
   },
-  query: (query, callback) => {
+  query: async (query, callback) => {
     connection.query(query, callback);
   },
 };
