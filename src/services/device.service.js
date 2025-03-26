@@ -1,29 +1,34 @@
-import { database } from "../config/database.js";
+import { deviceModel } from '../models/device.model.js';
 
 export const deviceService = {
   getOne: async (id) => {
-    return { id: id, name: "Device 1" };
+    return deviceModel.getOne(id);
   },
   getAll: async (pageSize, page) => {
-    const deviceList = [];
-    await database.query("SELECT * FROM device", (err, res) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      rows.forEach((row) => {
-        deviceList.push(row);
-      });
-    });
-    return deviceList;
+    return await deviceModel.getAll(pageSize, page);
   },
   create: async (device) => {
-    return device;
+    try {
+      await deviceModel.create(device);
+      return true;
+    } catch {
+      return false;
+    }
   },
   update: async (device) => {
-    return device;
+    try {
+      await deviceModel.update(device);
+      return true;
+    } catch {
+      return false;
+    }
   },
   delete: async (id) => {
-    return { id: id, name: "Device 1" };
+    try {
+      await deviceModel.delete(id);
+      return true;
+    } catch {
+      return false;
+    }
   },
 };

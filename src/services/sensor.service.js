@@ -1,20 +1,34 @@
+import { sensorModel } from '../models/sensor.model.js';
+
 export const sensorService = {
   getOne: async (id) => {
-    return { id: id, name: "Sensor 1" };
+    return await sensorModel.getOne(id);
   },
-  getAll: async () => {
-    return [
-      { id: 1, name: "Sensor 1" },
-      { id: 2, name: "Sensor 2" },
-    ];
+  getAll: async (pageSize, page) => {
+    return await sensorModel.getAll(pageSize, page);
   },
   create: async (sensor) => {
-    return sensor;
+    try {
+      await sensorModel.create(sensor);
+      return true;
+    } catch {
+      return false;
+    }
   },
   update: async (sensor) => {
-    return sensor;
+    try {
+      await sensorModel.update(sensor);
+      return true;
+    } catch {
+      return false;
+    }
   },
   delete: async (id) => {
-    return { id: id, name: "Sensor 1" };
+    try {
+      await sensorModel.delete(id);
+      return true;
+    } catch {
+      return false;
+    }
   },
 };

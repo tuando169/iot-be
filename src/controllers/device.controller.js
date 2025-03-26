@@ -1,21 +1,30 @@
-import { deviceService } from "../services/device.service.js";
+import { deviceService } from '../services/device.service.js';
 
 export const deviceController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
-    return await deviceService.getAll(pageSize, page);
+
+    return res.json({ devices: await deviceService.getAll(pageSize, page) });
   },
   getOne: async (req, res) => {
-    res.send("Device Controller Get One");
+    const id = req.params.id;
+    return res.json({ device: await deviceService.getOne(id) });
   },
   create: async (req, res) => {
-    res.send("Device Controller Create");
+    const success = await deviceService.create(req.body);
+    if (!success) return res.status(400).json({});
+    return res.status(200).json({});
   },
   update: async (req, res) => {
-    res.send("Device Controller Update");
+    const success = await deviceService.update(req.body);
+    if (!success) return res.status(400).json({});
+    return res.status(200).json({});
   },
   delete: async (req, res) => {
-    res.send("Device Controller Delete");
+    const id = req.params.id;
+    const success = await deviceService.delete(id);
+    if (!success) return res.status(400).json({});
+    return res.status(200).json({});
   },
 };

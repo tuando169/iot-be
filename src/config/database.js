@@ -1,17 +1,18 @@
-import mysql from "mysql2";
+import mysql from 'mysql2/promise.js';
 
 let connection;
 export const database = {
   connect: () => {
     connection = mysql.createPool({
-      host: "localhost",
-      user: "root",
-      password: "123456",
-      database: "iot",
+      host: 'localhost',
+      user: 'root',
+      password: '123456',
+      database: 'iot',
       port: 3306,
     });
   },
-  query: async (query, callback) => {
-    connection.query(query, callback);
+  execute: async (sql, params = []) => {
+    const [rows] = await connection.execute(sql, params);
+    return rows;
   },
 };
