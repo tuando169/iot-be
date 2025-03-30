@@ -1,4 +1,5 @@
-import { deviceModel } from '../models/device.model.js';
+import { ErrorConstants } from "../constants/error.constant.js";
+import { deviceModel } from "../models/device.model.js";
 
 export const deviceService = {
   getOne: async (id) => {
@@ -9,26 +10,29 @@ export const deviceService = {
   },
   create: async (device) => {
     try {
+      if (this.getOne(device.id) !== undefined)
+        return ErrorConstants.ALREADY_EXISTS.errorCode;
       await deviceModel.create(device);
-      return true;
     } catch {
-      return false;
+      return ErrorConstants.INTERVAL_SERVER_ERROR.errorCode;
     }
   },
   update: async (device) => {
     try {
+      if (this.getOne(device.id) === undefined)
+        return ErrorConstants.NOT_FOUND.errorCode;
       await deviceModel.update(device);
-      return true;
     } catch {
-      return false;
+      return ErrorConstants.INTERVAL_SERVER_ERROR.errorCode;
     }
   },
   delete: async (id) => {
     try {
+      if (this.getOne(id) === undefined)
+        return ErrorConstants.NOT_FOUND.errorCode;
       await deviceModel.delete(id);
-      return true;
     } catch {
-      return false;
+      return ErrorConstants.INTERVAL_SERVER_ERROR.errorCode;
     }
   },
 };

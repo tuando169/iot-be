@@ -1,4 +1,4 @@
-import { deviceService } from '../services/device.service.js';
+import { deviceService } from "../services/device.service.js";
 
 export const deviceController = {
   getAll: async (req, res) => {
@@ -12,19 +12,19 @@ export const deviceController = {
     return res.json({ device: await deviceService.getOne(id) });
   },
   create: async (req, res) => {
-    const success = await deviceService.create(req.body);
-    if (!success) return res.status(400).json({});
-    return res.status(200).json({});
+    const error = await deviceService.create(req.body);
+    if (!error) return res.status(200).json({});
+    return res.status(error.statusCode).json({ message: error.message });
   },
   update: async (req, res) => {
-    const success = await deviceService.update(req.body);
-    if (!success) return res.status(400).json({});
-    return res.status(200).json({});
+    const error = await deviceService.update(req.body);
+    if (!error) return res.status(200).json({});
+    return res.status(error.statusCode).json({ message: error.message });
   },
   delete: async (req, res) => {
     const id = req.params.id;
-    const success = await deviceService.delete(id);
-    if (!success) return res.status(400).json({});
-    return res.status(200).json({});
+    const error = await deviceService.delete(id);
+    if (!error) return res.status(200).json({});
+    return res.status(error.statusCode).json({ message: error.message });
   },
 };
