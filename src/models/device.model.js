@@ -13,9 +13,9 @@ export const deviceModel = {
       return res.map((row) => {
         return {
           id: row.ID,
-          name: row.Device,
+          device: row.Device,
           state: row.State ? true : false,
-          updatedAt: row.UpdatedAt,
+          time: row.UpdatedAt,
         };
       });
     }
@@ -26,7 +26,7 @@ export const deviceModel = {
     return res.map((row) => {
       return {
         id: row.ID,
-        name: row.Device,
+        device: row.Device,
         state: row.State ? true : false,
         time: row.UpdatedAt,
       };
@@ -39,7 +39,7 @@ export const deviceModel = {
     );
     return {
       id: res[0].ID,
-      name: res[0].Device,
+      device: res[0].Device,
       state: res[0].State,
       time: res[0].UpdatedAt,
     };
