@@ -4,8 +4,11 @@ export const deviceController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
+    const dateSearch = req.query.date;
 
-    return res.json({ devices: await deviceService.getAll(pageSize, page) });
+    return res.json({
+      devices: await deviceService.getAll(pageSize, page, dateSearch),
+    });
   },
   getOne: async (req, res) => {
     const id = req.params.id;

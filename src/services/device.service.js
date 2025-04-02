@@ -5,8 +5,8 @@ export const deviceService = {
   getOne: async (id) => {
     return deviceModel.getOne(id);
   },
-  getAll: async (pageSize, page) => {
-    return await deviceModel.getAll(pageSize, page);
+  getAll: async (pageSize, page, dateSearch) => {
+    return await deviceModel.getAll(pageSize, page, dateSearch);
   },
   create: async (device) => {
     try {
