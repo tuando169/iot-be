@@ -1,12 +1,12 @@
-import { deviceService } from '../services/device.service.js';
+import { deviceService } from "../services/device.service.js";
 
 export const deviceController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
     const dateSearch = req.query.date;
-    const sortBy = req.query.sortBy ?? 'device';
-    const sortOrder = req.query.sortOrder ?? 'ASC';
+    const sortBy = req.query.sortBy ?? "device";
+    const sortOrder = req.query.sortOrder ?? "ASC";
 
     return res.json({
       devices: await deviceService.getAll(
@@ -18,24 +18,38 @@ export const deviceController = {
       ),
     });
   },
-  getOne: async (req, res) => {
-    const id = req.params.id;
-    return res.json({ device: await deviceService.getOne(id) });
+  getStatus: async (req, res) => {
+    const status = await deviceService.getStatus();
+    return res
+      .status(200)
+      .json({ light: status[0], fan: status[1], airConditioner: status[2] });
   },
-  create: async (req, res) => {
-    const error = await deviceService.create(req.body);
-    if (!error) return res.status(200).json({});
-    return res.status(error.statusCode).json({ message: error.message });
-  },
-  update: async (req, res) => {
-    const error = await deviceService.update(req.body);
-    if (!error) return res.status(200).json({});
-    return res.status(error.statusCode).json({ message: error.message });
-  },
-  delete: async (req, res) => {
-    const id = req.params.id;
-    const error = await deviceService.delete(id);
-    if (!error) return res.status(200).json({});
+  toggle: async (req, res) => {
+    const light = req.body.light;
+    const fan = req.body.fan;
+    const airConditioner = req.body.airConditioner;
+    const devices = [];
+    if (light !== undefined)
+      devices.push({
+        device: "light",
+        state: light,
+      });
+    if (fan !== undefined)
+      devices.push({
+        device: "fan",
+        state: fan,
+      });
+    if (airConditioner !== undefined)
+      devices.push({
+        device: "airConditioner",
+        state: airConditioner,
+      });
+
+    const error = await deviceService.toggle(devices);
+    if (!error)
+      return res.status(ErrorConstants.SUCCESSFUL.statusCode).json({
+        message: ErrorConstants.SUCCESSFUL.message,
+      });
     return res.status(error.statusCode).json({ message: error.message });
   },
 };

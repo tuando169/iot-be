@@ -4,9 +4,7 @@ import express from "express";
 const router = express.Router();
 
 router.get("/", deviceController.getAll);
-router.get("/:id", deviceController.getOne);
-router.post("/", deviceController.create);
-router.patch("/", deviceController.update);
-router.delete("/", deviceController.delete);
+router.get("/status", deviceController.getStatus);
+router.post("/toggle", deviceController.toggle);
 
 export default router;
