@@ -9,7 +9,7 @@ const port = 8000;
 app.use(express.json());
 
 database.connect();
-mqttHandler.connect();
+// mqttHandler.connect();
 
 routes(app);
 app.listen(port, () => {

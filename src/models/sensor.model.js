@@ -1,30 +1,19 @@
-import { database } from "../config/database.js";
+import { database } from '../config/database.js';
 
 export const sensorModel = {
-  getAll: async (pageSize, page, filter) => {
+  getAll: async (pageSize, page, filterBy, filterValue, sortBy, sortOrder) => {
     const limit = pageSize.toString();
     const offset = ((page - 1) * pageSize).toString();
-    const { temperature, humidity, light, time } = filter;
-    let query = "SELECT * FROM data_sensor WHERE 1=1";
+    let query = `SELECT * FROM data_sensor`;
     const params = [];
-    if (temperature) {
-      query += " AND Temperature = ?";
-      params.push(temperature);
+    if (filterBy && filterValue) {
+      query += ` WHERE ${filterBy} = ?`;
+      params.push(filterValue);
     }
-    if (humidity) {
-      query += " AND Humidity = ?";
-      params.push(humidity);
+    if (sortBy && sortOrder) {
+      query += ` ORDER BY ${sortBy} ${sortOrder}`;
     }
-    if (light) {
-      query += " AND Light = ?";
-      params.push(light);
-    }
-    if (time) {
-      query += " AND CreatedAt LIKE ?";
-      params.push("%" + time + "%");
-    }
-    query += " LIMIT ? OFFSET ?";
-
+    query += ' LIMIT ? OFFSET ?';
     params.push(limit, offset);
     const res = await database.execute(query, params);
     return res.map((row) => {
@@ -39,7 +28,7 @@ export const sensorModel = {
   },
   getOne: async (id) => {
     const res = await database.execute(
-      "SELECT * FROM data_sensor WHERE ID = ?",
+      'SELECT * FROM data_sensor WHERE ID = ?',
       [id]
     );
     return {
@@ -52,17 +41,17 @@ export const sensorModel = {
   },
   create: async (sensor) => {
     return await database.execute(
-      "INSERT INTO data_sensor (Temperature, Humidity, Light) VALUES (?, ?,?)",
+      'INSERT INTO data_sensor (Temperature, Humidity, Light) VALUES (?, ?,?)',
       [sensor.temperature, sensor.humidity, sensor.light]
     );
   },
   update: async (sensor) => {
     return await database.execute(
-      "UPDATE data_sensor SET Temperature = ?, Humidity = ?, Light = ? WHERE ID = ?",
+      'UPDATE data_sensor SET Temperature = ?, Humidity = ?, Light = ? WHERE ID = ?',
       [sensor.temperature, sensor.humidity, sensor.light, sensor.id]
     );
   },
   delete: async (id) => {
-    return await database.execute("DELETE FROM data_sensor WHERE ID = ?", [id]);
+    return await database.execute('DELETE FROM data_sensor WHERE ID = ?', [id]);
   },
 };

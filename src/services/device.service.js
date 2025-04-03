@@ -1,12 +1,18 @@
-import { ErrorConstants } from "../constants/error.constant.js";
-import { deviceModel } from "../models/device.model.js";
+import { ErrorConstants } from '../constants/error.constant.js';
+import { deviceModel } from '../models/device.model.js';
 
 export const deviceService = {
   getOne: async (id) => {
     return deviceModel.getOne(id);
   },
-  getAll: async (pageSize, page, dateSearch) => {
-    return await deviceModel.getAll(pageSize, page, dateSearch);
+  getAll: async (pageSize, page, dateSearch, sortBy, sortOrder) => {
+    return await deviceModel.getAll(
+      pageSize,
+      page,
+      dateSearch,
+      sortBy,
+      sortOrder
+    );
   },
   create: async (device) => {
     try {

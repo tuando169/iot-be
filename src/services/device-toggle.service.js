@@ -1,37 +1,31 @@
-import { mqttHandler, MqttTopicEnum } from "../config/mqtt.js";
-import { ErrorConstants } from "../constants/error.constant.js";
-import { deviceModel } from "../models/device.model.js";
+import { mqttHandler, MqttTopicEnum } from '../config/mqtt.js';
+import { ErrorConstants } from '../constants/error.constant.js';
+import { deviceModel } from '../models/device.model.js';
 
 export const deviceToggleService = {
   toggleDevice: async (devices) => {
-    const states = devices.map((device) => {
+    // devices = [{ device1: true }, { device2: false }]
+    console.log('devices', devices);
+    let command = '';
+    const states = devices.map((device, index) => {
+      const deviceName = device.device;
+      const deviceState = device.state;
+      command += deviceState ? `LED${index}_ON ` : `LED${index}_OFF `;
       return {
-        value: device.state ? 1 : 0,
-        label: device.state ? "ON" : "OFF",
+        name: deviceName,
+        state: deviceState ? 1 : 0,
       };
     });
-    const command = `LED1_${states[0]},LED2_${states[1]},LED3_${states[2]}`;
-    try {
-      let deviceHistories = [];
-      mqttHandler.listenToTopic(MqttTopicEnum.DeviceStatus, (message) => {
-        // LED1_ON LED2_OFF LED3_ON
-        const status = message.split(" ");
-        status.forEach((currentState, index) => {
-          if (currentState.split("_")[1] !== states[index].label) {
-            deviceHistories.push({
-              name: "LED1",
-              state: states[index].value,
-            });
-          }
-        });
-      });
-      mqttHandler.publish(MqttTopicEnum.DeviceToggle, command);
-      deviceHistories.forEach(async (device) => {
-        await deviceModel.create(device);
-      });
-    } catch (error) {
-      console.error("Error toggling LED:", error);
-      return ErrorConstants.INTERVAL_SERVER_ERROR.errorCode;
-    }
+    console.log('service', states);
+
+    // try {
+    //   mqttHandler.publish(MqttTopicEnum.DeviceToggle, command);
+    //   devices.forEach(async (device) => {
+    //     await deviceModel.create(device);
+    //   });
+    // } catch (error) {
+    //   console.error('Error toggling LED:', error);
+    //   return ErrorConstants.INTERVAL_SERVER_ERROR.errorCode;
+    // }
   },
 };

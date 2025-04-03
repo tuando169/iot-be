@@ -1,25 +1,23 @@
-import { sensorService } from "../services/sensor.service.js";
+import { sensorService } from '../services/sensor.service.js';
 
 export const sensorController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
-    const filter = {};
-    if (req.query.temperature) {
-      filter.temperature = req.query.temperature;
-    }
-    if (req.query.humidity) {
-      filter.humidity = req.query.humidity;
-    }
-    if (req.query.light) {
-      filter.light = req.query.light;
-    }
-    if (req.query.time) {
-      filter.time = req.query.time;
-    }
+    const sortBy = req.query.sortBy || 'temperature';
+    const sortOrder = req.query.sortOrder || 'ASC';
+    const filterBy = req.query.filterBy;
+    const filterValue = req.query.filterValue;
 
     return res.json({
-      sensors: await sensorService.getAll(pageSize, page, filter),
+      sensors: await sensorService.getAll(
+        pageSize,
+        page,
+        filterBy,
+        filterValue,
+        sortBy,
+        sortOrder
+      ),
     });
   },
   getOne: async (req, res) => {

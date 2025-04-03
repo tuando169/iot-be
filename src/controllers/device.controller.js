@@ -1,13 +1,21 @@
-import { deviceService } from "../services/device.service.js";
+import { deviceService } from '../services/device.service.js';
 
 export const deviceController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
     const dateSearch = req.query.date;
+    const sortBy = req.query.sortBy ?? 'device';
+    const sortOrder = req.query.sortOrder ?? 'ASC';
 
     return res.json({
-      devices: await deviceService.getAll(pageSize, page, dateSearch),
+      devices: await deviceService.getAll(
+        pageSize,
+        page,
+        dateSearch,
+        sortBy,
+        sortOrder
+      ),
     });
   },
   getOne: async (req, res) => {
