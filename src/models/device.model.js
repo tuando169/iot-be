@@ -15,7 +15,7 @@ export const deviceModel = {
           id: row.ID,
           device: row.Device,
           state: row.State ? true : false,
-          updatedAt: row.UpdatedAt,
+          time: row.UpdatedAt,
         };
       });
     }
