@@ -1,4 +1,4 @@
-import { database } from "../config/database.js";
+import { database } from '../config/database.js';
 
 export const sensorModel = {
   getAll: async (pageSize, page, filterBy, filterValue, sortBy, sortOrder) => {
@@ -13,7 +13,7 @@ export const sensorModel = {
     if (sortBy && sortOrder) {
       query += ` ORDER BY ${sortBy} ${sortOrder}`;
     }
-    query += " LIMIT ? OFFSET ?";
+    query += ' LIMIT ? OFFSET ?';
     params.push(limit, offset);
     const res = await database.execute(query, params);
     return res.map((row) => {
@@ -25,5 +25,17 @@ export const sensorModel = {
         time: row.Time,
       };
     });
+  },
+  create: async (data) => {
+    const now = new Date();
+    const query = `INSERT INTO data_sensor (Temperature, Humidity, Light, Time) VALUES (?, ?, ?, ?)`;
+    const params = [
+      data.temperature,
+      data.humidity,
+      data.light,
+      now.toISOString().slice(0, 19).replace('T', ' '),
+    ];
+    const res = await database.execute(query, params);
+    return res;
   },
 };

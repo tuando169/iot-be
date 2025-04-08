@@ -1,12 +1,12 @@
-import { deviceService } from "../services/device.service.js";
+import { deviceService } from '../services/device.service.js';
 
 export const deviceController = {
   getAll: async (req, res) => {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
     const dateSearch = req.query.date;
-    const sortBy = req.query.sortBy ?? "device";
-    const sortOrder = req.query.sortOrder ?? "ASC";
+    const sortBy = req.query.sortBy ?? 'device';
+    const sortOrder = req.query.sortOrder ?? 'ASC';
 
     return res.json({
       devices: await deviceService.getAll(
@@ -31,17 +31,17 @@ export const deviceController = {
     const devices = [];
     if (light !== undefined)
       devices.push({
-        device: "light",
+        device: 'light',
         state: light,
       });
     if (fan !== undefined)
       devices.push({
-        device: "fan",
+        device: 'fan',
         state: fan,
       });
     if (airConditioner !== undefined)
       devices.push({
-        device: "airConditioner",
+        device: 'airConditioner',
         state: airConditioner,
       });
 

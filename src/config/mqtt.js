@@ -1,8 +1,7 @@
 import mqtt from "mqtt";
 
 export const MqttTopicEnum = {
-  DeviceToggle: "device",
-  DeviceStatus: "device-status",
+  DeviceToggle: "device-toggle",
   DataSensor: "data-sensor",
 };
 

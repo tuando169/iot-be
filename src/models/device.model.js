@@ -1,4 +1,4 @@
-import { database } from "../config/database.js";
+import { database } from '../config/database.js';
 
 export const deviceModel = {
   getAll: async (pageSize, page, dateSearch, sortBy, sortOrder) => {
@@ -20,7 +20,7 @@ export const deviceModel = {
       });
     }
     const res = await database.execute(
-      "SELECT * FROM device_history LIMIT ? OFFSET ?",
+      'SELECT * FROM device_history LIMIT ? OFFSET ?',
       [limit, offset]
     );
     return res.map((row) => {
@@ -31,5 +31,24 @@ export const deviceModel = {
         time: row.Time,
       };
     });
+  },
+  getRecentStatus: async () => {
+    const light = await database.execute(
+      'SELECT State FROM device_history WHERE Device = ? ORDER BY ID DESC LIMIT 1',
+      ['light']
+    );
+    const fan = await database.execute(
+      'SELECT State FROM device_history WHERE Device = ? ORDER BY ID DESC LIMIT 1',
+      ['fan']
+    );
+    const airConditioner = await database.execute(
+      'SELECT State FROM device_history WHERE Device = ? ORDER BY ID DESC LIMIT 1',
+      ['airConditioner']
+    );
+    return [
+      light[0].State ? true : false,
+      fan[0].State ? true : false,
+      airConditioner[0].State ? true : false,
+    ];
   },
 };
