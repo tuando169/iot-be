@@ -12,21 +12,26 @@ app.use(express.json());
 app.use(cors());
 
 database.connect();
-mqttHandler.connect();
-mqttHandler.subscribe(MqttTopicEnum.DataSensor);
-mqttHandler.listenToTopic(MqttTopicEnum.DataSensor, (message) => {
-  console.log('Received message:', message);
+mqttHandler.init();
 
-  const data = JSON.parse(message);
+setInterval(() => {
+  const temperature = Math.floor(Math.random() * 100);
+  const humidity = Math.floor(Math.random() * 100);
+  const light = Math.floor(Math.random() * 100);
+  const data = {
+    temperature: temperature,
+    humidity: humidity,
+    light: light,
+  };
   if (data) {
     sensorModel.create({
       temperature: data.temperature,
       humidity: data.humidity,
       light: data.light,
     });
+    console.log('Received data:', data);
   }
-  console.log('Received data:', data);
-});
+}, 5000);
 
 routes(app);
 app.listen(port, () => {

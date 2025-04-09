@@ -1,3 +1,4 @@
+import { ErrorConstants } from '../constants/error.constant.js';
 import { deviceService } from '../services/device.service.js';
 
 export const deviceController = {
