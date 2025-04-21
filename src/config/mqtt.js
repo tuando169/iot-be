@@ -59,8 +59,6 @@ export const mqttHandler = {
     mqttHandler.connect();
     mqttHandler.subscribe(MqttTopicEnum.DataSensor);
     mqttHandler.listenToTopic(MqttTopicEnum.DataSensor, (message) => {
-      console.log('Received message:', message);
-
       const data = JSON.parse(message);
       if (data) {
         sensorModel.create({

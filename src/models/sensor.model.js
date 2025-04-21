@@ -15,7 +15,7 @@ export const sensorModel = {
     }
     query += ' LIMIT ? OFFSET ?';
     params.push(limit, offset);
-    
+
     const res = await database.execute(query, params);
     return res.map((row) => {
       return {
@@ -28,7 +28,6 @@ export const sensorModel = {
     });
   },
   create: async (data) => {
-    const now = new Date();
     const query = `INSERT INTO data_sensor (Temperature, Humidity, Light) VALUES (?, ?, ?)`;
     const params = [data.temperature, data.humidity, data.light];
     const res = await database.execute(query, params);

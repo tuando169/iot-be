@@ -42,7 +42,7 @@ export const deviceController = {
       });
     if (airConditioner !== undefined)
       devices.push({
-        device: 'airConditioner',
+        device: 'air-conditioner',
         state: airConditioner,
       });
 

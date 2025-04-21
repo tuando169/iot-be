@@ -39,6 +39,8 @@ export const deviceModel = {
       'SELECT State FROM device_history WHERE Device = ? ORDER BY ID DESC LIMIT 1',
       ['air-conditioner']
     );
+    console.log(light, fan, airConditioner);
+    
     return [
       light[0].State ? true : false,
       fan[0].State ? true : false,

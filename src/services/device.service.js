@@ -17,26 +17,30 @@ export const deviceService = {
   },
   getStatus: async () => {
     const [light, fan, airConditioner] = await deviceModel.getRecentStatus();
+    console.log('service', light, fan, airConditioner);
+
     mqttHandler.publish(
       MqttTopicEnum.DeviceToggle,
-      `LED0_${light ? 'ON' : 'OFF'} LED1_${fan ? 'ON' : 'OFF'} LED2_${
+      `{LED1:'${light ? 'ON' : 'OFF'}', LED2:'${fan ? 'ON' : 'OFF'}', LED3:'${
         airConditioner ? 'ON' : 'OFF'
-      }`
+      }'}`
     );
+
     return [light, fan, airConditioner];
   },
   toggle: async (devices) => {
+    console.log('devices', devices);
+
     let command = '';
     const states = devices.map((device, index) => {
       const deviceName = device.device;
       const deviceState = device.state;
-      command += deviceState ? `LED${index}_ON ` : `LED${index}_OFF `;
+      command += `{LED${index + 1}:'${deviceState ? 'ON' : 'OFF'}'}`;
       return {
-        name: deviceName,
+        device: deviceName,
         state: deviceState ? 1 : 0,
       };
     });
-    console.log('service', states);
 
     try {
       mqttHandler.publish(MqttTopicEnum.DeviceToggle, command);
