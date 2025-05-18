@@ -6,8 +6,8 @@ export const deviceController = {
     const pageSize = req.query.pageSize || 10;
     const page = req.query.page || 1;
     const dateSearch = req.query.date;
-    const sortBy = req.query.sortBy ?? 'device';
-    const sortOrder = req.query.sortOrder ?? 'ASC';
+    const sortBy = req.query.sortBy ?? 'time';
+    const sortOrder = req.query.sortOrder ?? 'DESC';
 
     return res.json({
       devices: await deviceService.getAll(

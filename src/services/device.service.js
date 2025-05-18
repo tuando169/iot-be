@@ -42,6 +42,8 @@ export const deviceService = {
       };
     });
 
+    console.log('command', command);
+
     try {
       mqttHandler.publish(MqttTopicEnum.DeviceToggle, command);
       devices.forEach(async (device) => {

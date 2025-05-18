@@ -60,6 +60,7 @@ export const mqttHandler = {
     mqttHandler.subscribe(MqttTopicEnum.DataSensor);
     mqttHandler.listenToTopic(MqttTopicEnum.DataSensor, (message) => {
       const data = JSON.parse(message);
+
       if (data) {
         sensorModel.create({
           temperature: data.temperature,

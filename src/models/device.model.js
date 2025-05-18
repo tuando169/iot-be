@@ -40,7 +40,9 @@ export const deviceModel = {
       ['air-conditioner']
     );
     console.log(light, fan, airConditioner);
-    
+    if (!light.length || !fan.length || !airConditioner.length) {
+      return [false, false, false];
+    }
     return [
       light[0].State ? true : false,
       fan[0].State ? true : false,

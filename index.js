@@ -14,7 +14,6 @@ app.use(cors());
 database.connect();
 mqttHandler.init();
 
-
 routes(app);
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
