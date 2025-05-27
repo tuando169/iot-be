@@ -7,17 +7,33 @@ export const deviceModel = {
     let query = `SELECT * FROM device_history`;
     const params = [];
     if (dateSearch) {
-      query += ` WHERE Time LIKE ?`;
-      params.push(dateSearch + '%');
+      const total = await database.execute(
+        `SELECT * FROM device_history WHERE Time LIKE ?`,
+        [`%${dateSearch}%`]
+      );
+      const res = await database.execute(
+        `SELECT * FROM device_history WHERE Time LIKE ? ORDER BY ${sortBy} ${sortOrder} LIMIT ? OFFSET ?`,
+        [`%${dateSearch}%`, limit, offset]
+      );
+      const data = res.map((row) => {
+        return {
+          id: row.ID,
+          device: row.Device,
+          state: row.State ? true : false,
+          time: row.Time,
+        };
+      });
+      return {
+        devices: data,
+        total: total.length,
+      };
     }
-    if (sortBy && sortOrder) {
-      query += ` ORDER BY ${sortBy} ${sortOrder}`;
-    }
-    query += ' LIMIT ? OFFSET ?';
-    params.push(limit, offset);
-
-    const res = await database.execute(query, params);
-    return res.map((row) => {
+    const total = await database.execute(`SELECT * FROM device_history`);
+    const res = await database.execute(
+      "SELECT * FROM device_history LIMIT ? OFFSET ?",
+      [limit, offset]
+    );
+    const data = res.map((row) => {
       return {
         id: row.ID,
         device: row.Device,
@@ -25,6 +41,10 @@ export const deviceModel = {
         time: row.Time,
       };
     });
+    return {
+      devices: data,
+      total: total.length,
+    };
   },
   getRecentStatus: async () => {
     const light = await database.execute(

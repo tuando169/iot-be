@@ -9,15 +9,9 @@ export const deviceController = {
     const sortBy = req.query.sortBy ?? 'time';
     const sortOrder = req.query.sortOrder ?? 'DESC';
 
-    return res.json({
-      devices: await deviceService.getAll(
-        pageSize,
-        page,
-        dateSearch,
-        sortBy,
-        sortOrder
-      ),
-    });
+    return res.json(
+      await deviceService.getAll(pageSize, page, dateSearch, sortBy, sortOrder)
+    );
   },
   getStatus: async (req, res) => {
     const status = await deviceService.getStatus();

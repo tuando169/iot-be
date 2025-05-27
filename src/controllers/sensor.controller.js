@@ -9,15 +9,15 @@ export const sensorController = {
     const filterBy = req.query.filterBy;
     const filterValue = req.query.filterValue;
 
-    return res.json({
-      sensors: await sensorService.getAll(
+    return res.json(
+      await sensorService.getAll(
         pageSize,
         page,
         filterBy,
         filterValue,
         sortBy,
         sortOrder
-      ),
-    });
+      )
+    );
   },
 };

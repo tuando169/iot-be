@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 database.connect();
-mqttHandler.init();
+// mqttHandler.connect();
 
 routes(app);
 app.listen(port, () => {
