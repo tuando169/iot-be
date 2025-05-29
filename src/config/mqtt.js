@@ -58,8 +58,11 @@ export const mqttHandler = {
   init: () => {
     mqttHandler.connect();
     mqttHandler.subscribe(MqttTopicEnum.DataSensor);
+    console.log('Listening to topic:', MqttTopicEnum.DataSensor);
+
     mqttHandler.listenToTopic(MqttTopicEnum.DataSensor, (message) => {
       const data = JSON.parse(message);
+      console.log('Received data:', data);
 
       if (data) {
         sensorModel.create({
@@ -68,7 +71,6 @@ export const mqttHandler = {
           light: data.light,
         });
       }
-      console.log('Received data:', data);
     });
   },
 };
